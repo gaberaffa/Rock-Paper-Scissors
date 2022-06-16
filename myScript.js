@@ -19,10 +19,10 @@ function standardizeMove(playerSelection) {
 
 
 function isValidMove(playerMove) {
-    if (playerMove != 'Rock' || playerMove != 'Paper' || playerMove != 'Scissors') {
-        return false;
-    } else {
+    if (playerMove == 'Rock' || playerMove == 'Paper' || playerMove == 'Scissors') {
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -33,7 +33,8 @@ function playerPlay() {
     if (isValidMove(playerMove)) {
         return playerMove;
     } else {
-        throw "Invalid Input";
+        console.log("Invalid Input");
+        playerPlay();
     }
 }
 
@@ -64,7 +65,7 @@ function playRound(playerSelection, computerSelection, playerWins, computerWins)
             computerWins++;
         } else {
             console.log("You win! Rock beats Scissors");
-            playerWins;
+            playerWins++;
         }
     }
     return true;
