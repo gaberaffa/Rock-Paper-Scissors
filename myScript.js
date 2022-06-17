@@ -1,3 +1,7 @@
+/* 
+ * Randomizes a choice of Rock, Paper, 
+ * or Scissors on behalf of the Computer
+ */
 function computerPlay() {
     move =  Math.random()
     switch (true) {
@@ -10,14 +14,20 @@ function computerPlay() {
     }
 }
 
-
+/*
+ * Transforms string input to
+ * capitalize the first letter only
+ */
 function standardizeMove(playerSelection) {
     let trimmedMove = playerSelection.trim();
     let playerMove = trimmedMove.charAt(0).toUpperCase() + trimmedMove.slice(1).toLowerCase();
     return playerMove;
 }
 
-
+/*
+ * Determines whether a move / string is valid
+ * in the context of Rock, Paper, Scissors
+ */
 function isValidMove(playerMove) {
     if (playerMove == 'Rock' || playerMove == 'Paper' || playerMove == 'Scissors') {
         return true;
@@ -26,7 +36,10 @@ function isValidMove(playerMove) {
     }
 }
 
-
+/*
+ * Prompts the user for move input
+ * as part of Rock, Paper, Scissors
+ */
 function playerPlay() {
     let playerSelection = prompt("Type one of Rock, Paper, or Scissors");
     let playerMove = standardizeMove(playerSelection);
@@ -38,7 +51,12 @@ function playerPlay() {
     }
 }
 
-
+/* 
+ * Simulates a round of Rock, Paper, Scissors.
+ * Returns 1 if the user wins, -1 if the computer wins
+ * and 0 if there is a tie. It also provides commentary
+ * on game status in the form of short updates
+ */
 function playRound(playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
         console.log("It's a tie! Try again")
@@ -71,7 +89,10 @@ function playRound(playerSelection, computerSelection) {
     return true;
 }
 
-
+/* Simulates a five-round Rock,
+ * Paper, Scissors game and provides
+ * ongoing updates and a final assessment
+ */
 function game() {
     let round = 1;
     let playerWins = 0;
