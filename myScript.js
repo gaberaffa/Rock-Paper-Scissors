@@ -39,33 +39,33 @@ function playerPlay() {
 }
 
 
-function playRound(playerSelection, computerSelection, playerWins, computerWins) {
+function playRound(playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
-        console.log("It's a tie!")
-        return false;
+        console.log("It's a tie! Try again")
+        return 0;
     } else if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
             console.log("You win! Paper beats Rock");
-            playerWins++;
+            return 1;
         } else {
             console.log("You lose. Rock beats Scissors");
-            computerWins++;
+            return -1;
         }
     } else if (computerSelection == 'Paper') {
         if (playerSelection == 'Rock') {
             console.log("You lose. Paper beats Rock");
-            computerWins++;
+            return -1;
         } else {
             console.log("You win! Scissors beats Paper");
-            playerWins++;
+            return 1;
         }
     } else {
         if (playerSelection == 'Paper') {
             console.log("You lose. Scissors beats Paper");
-            computerWins++;
+            return -1;
         } else {
             console.log("You win! Rock beats Scissors");
-            playerWins++;
+            return 1;
         }
     }
     return true;
@@ -78,13 +78,25 @@ function game() {
     let computerWins = 0;
 
     while (round <= 5) {
-        console.log(`Round: ${round}`);
-        while (!playRound(playerPlay(), computerPlay(), playerWins, computerWins)) {
-            console.log("Try again!")
+        console.log(`Round ${round}:`);
+        flag = true;
+        while(flag) {
+            flag = false;
+            switch(playRound(playerPlay(), computerPlay())) {
+                case 1: 
+                    playerWins++;
+                    break;
+                case -1: 
+                    computerWins++;
+                    break;
+                default:
+                    flag = true;
+            }
         }
-        console.log(`Score: You: ${playerWins} vs Computer: ${computerWins}`);
+        console.log(`Score:\n You: ${playerWins} - Computer: ${computerWins}`);
         round++;
     }
+    console.log(`Game Over. Final Score:\n You: ${playerWins} - Computer: ${computerWins}`)
     if (playerWins >= computerWins) {
         return "You won!"
     } else {
