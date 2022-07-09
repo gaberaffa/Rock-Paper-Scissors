@@ -14,43 +14,6 @@ function computerPlay() {
     }
 }
 
-/*
- * Transforms string input to
- * capitalize the first letter only
- */
-function standardizeMove(playerSelection) {
-    let trimmedMove = playerSelection.trim();
-    let playerMove = trimmedMove.charAt(0).toUpperCase() + trimmedMove.slice(1).toLowerCase();
-    return playerMove;
-}
-
-/*
- * Determines whether a move / string is valid
- * in the context of Rock, Paper, Scissors
- */
-function isValidMove(playerMove) {
-    if (playerMove == 'Rock' || playerMove == 'Paper' || playerMove == 'Scissors') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/*
- * Prompts the user for move input
- * as part of Rock, Paper, Scissors
- */
-function playerPlay() {
-    let playerSelection = prompt("Type one of Rock, Paper, or Scissors");
-    let playerMove = standardizeMove(playerSelection);
-    if (isValidMove(playerMove)) {
-        return playerMove;
-    } else {
-        console.log("Invalid Input");
-        playerPlay();
-    }
-}
-
 /* 
  * Simulates a round of Rock, Paper, Scissors.
  * Returns 1 if the user wins, -1 if the computer wins
@@ -86,7 +49,6 @@ function playRound(playerSelection, computerSelection) {
             return 1;
         }
     }
-    return true;
 }
 
 /* Simulates a five-round Rock,
@@ -97,13 +59,21 @@ function game() {
     let round = 1;
     let playerWins = 0;
     let computerWins = 0;
+    let playerPlay;
+
+    buttons = Array.from(document.querySelectorAll(button));
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            return button.querySelector("h2").innerHTML;
+        });
+    });
 
     while (round <= 5) {
-        console.log(`Round ${round}:`);
+        
         flag = true;
         while(flag) {
             flag = false;
-            switch(playRound(playerPlay(), computerPlay())) {
+            switch(playRound(playerPlay, computerPlay())) {
                 case 1: 
                     playerWins++;
                     break;
@@ -116,6 +86,8 @@ function game() {
         }
         console.log(`Score:\n You: ${playerWins} - Computer: ${computerWins}`);
         round++;
+        document.querySelector("#round").textContent = `Round ${round} of 5`;
+    
     }
     console.log(`Game Over. Final Score:\n You: ${playerWins} - Computer: ${computerWins}`)
     if (playerWins >= computerWins) {
