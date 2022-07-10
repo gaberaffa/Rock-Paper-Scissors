@@ -1,11 +1,7 @@
 /* Some Global Variables */
-let round = document.querySelector("#round");
+let round = document.querySelector("#round-title");
 let computerScore = document.querySelector("#computer-score");
 let userScore = document.querySelector("#user-score");
-// use global ints instead!s
-let curr_round;
-let userWins;
-let computerWins;
 let topBin = document.querySelector("#top");
 let buttons = Array.from(document.querySelectorAll("button"));
 buttons.forEach(button => {
@@ -47,13 +43,19 @@ function updateScore(element) {
     element.textContent = element.textContent.replace(val, (++updated).toString());
 };
 
+function updateRound() {
+    let currentRound = +(round.textContent.trim()[6]);
+    let newRound = (++currentRound).toString();
+    round.textContent = round.textContent.replace(round.textContent.trim()[6], newRound);
+};
+
+
 /* Simulates a round of Rock, Paper, Scissors */
 function playRound(playerSelection, computerSelection) {
     if (playerSelection.charAt(0) == computerSelection.charAt(0)) {
         printMessage("It's a tie! Try again");
         return;
     } 
-    
     if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
             printMessage("You win! Paper beats Rock");
