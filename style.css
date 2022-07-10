@@ -67,7 +67,7 @@ button {
     width: 15em;
 }
 
-#round {
+.round {
     color: rgb(40,40,40);
     -webkit-text-stroke: 0px;
 }

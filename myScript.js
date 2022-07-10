@@ -6,12 +6,12 @@ let userScore = document.querySelector("#user-score");
 let curr_round;
 let userWins;
 let computerWins;
-let top = document.querySelector("#top");
+let topBin = document.querySelector("#top");
 let buttons = Array.from(document.querySelectorAll("button"));
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         playRound(button.querySelector("h2").innerHTML, computerPlay());
-        top.removeChild(message_box);
+        //topBin.removeChild(topBin.lastChild);
     });
 });
 
@@ -35,20 +35,21 @@ function computerPlay() {
 function printMessage(message) {
     let message_box = document.createElement("h2");
     message_box.textContent = message;
-    top.appendChild(message_box);
+    message_box.setAttribute("class", "round")
+    topBin.appendChild(message_box);
 };
 
 /* Updates the score shown on the website */
-function updateScore(playerScore) {
-    let string = playerScore.innerHTML;
-    let val = string.charAt(string.length - 1);
-    string.replace(val, (++Number(val)).toString);
-}
+function updateScore(element) {
+    let val = element.innerHTML.charAt(score.length - 1);
+    element.innerHTML.replace(val, ++Number(val).toString);
+};
 
 /* Simulates a round of Rock, Paper, Scissors */
 function playRound(playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
         printMessage("It's a tie! Try again");
+        return;
     } else if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
             printMessage("You win! Paper beats Rock");
@@ -57,6 +58,7 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You lose. Rock beats Scissors");
             updateScore(computerScore);
         }
+        return;
     } else if (computerSelection == 'Paper') {
         if (playerSelection == 'Rock') {
             printMessage("You lose. Paper beats Rock")
@@ -65,6 +67,7 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You win! Scissors beats Paper");
             updateScore(userScore);
         }
+        return;
     } else {
         if (playerSelection == 'Paper') {
             printMessage("You lose. Scissors beats Paper");
@@ -73,6 +76,7 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You win! Rock beats Scissors");
             updateScore(userScore);
         }
+        return;
     }
 }
 
