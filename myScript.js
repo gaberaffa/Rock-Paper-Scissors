@@ -9,15 +9,17 @@ let buttons = Array.from(document.querySelectorAll("button"));
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         let status = playRound(button.querySelector("h2").textContent.trim(), computerPlay());
-        setTimeout(() => topBin.removeChild(topBin.lastChild), 1000);
         if (isGameOver()) {
             resetGame();
-            return;
         };
         if (status) updateRound();
         return;
     });
 });
+
+function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
 
 /* Randomizes a choice of Rock, Paper, or Scissors on behalf of the Computer */
 function computerPlay() {
@@ -48,6 +50,7 @@ function updateScore(element) {
     element.textContent = element.textContent.replace(val, (++updated).toString());
 };
 
+/* Updates the round shown on the page */
 function updateRound() {
     let currentRound = +(round.textContent.trim()[6]);
     let newRound = (++currentRound).toString();
@@ -58,7 +61,8 @@ function updateRound() {
 function playRound(playerSelection, computerSelection) {
     if (playerSelection.charAt(0) == computerSelection.charAt(0)) {
         printMessage("It's a tie! Try again");
-        return 0 ;
+        setTimeout(() => topBin.removeChild(topBin.lastChild), 1200);
+        return 0;
     } 
     if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
@@ -85,6 +89,7 @@ function playRound(playerSelection, computerSelection) {
             updateScore(userScore);
         }
     }
+    setTimeout(() => topBin.removeChild(topBin.lastChild), 1000);
     return 1;
 }
 
@@ -103,9 +108,10 @@ function resetGame() {
     let trimmedComputer = computerScore.textContent.trim();
     if (trimmedUser.charAt(trimmedUser.length - 1) > trimmedComputer.charAt(trimmedComputer.length - 1)) {
         printMessage("You Won!")
-        setTimeout(() => topBin.removeChild(topBin.lastChild), 2000);
+        setTimeout(() => topBin.removeChild(topBin.lastChild), 3000);
     } else {
         printMessage("You Lost")
+        setTimeout(() => topBin.removeChild(topBin.lastChild), 3000);
     }
     userScore.textContent = "User: 0"
     computerScore.textContent = "Computer: 0"
