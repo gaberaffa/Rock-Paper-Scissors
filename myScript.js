@@ -1,3 +1,20 @@
+/* Some Global Variables */
+let round = document.querySelector("#round");
+let computerScore = document.querySelector("#computer-score");
+let userScore = document.querySelector("#user-score");
+// use global ints instead!s
+let curr_round;
+let userWins;
+let computerWins;
+let top = document.querySelector("#top");
+let buttons = Array.from(document.querySelectorAll("button"));
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        playRound(button.querySelector("h2").innerHTML, computerPlay());
+        top.removeChild(message_box);
+    });
+});
+
 /* 
  * Randomizes a choice of Rock, Paper, 
  * or Scissors on behalf of the Computer
@@ -12,87 +29,64 @@ function computerPlay() {
         default:
             return 'Scissors';
     }
+};
+
+/* Prints a message on the screen regarding the status of the game */
+function printMessage(message) {
+    let message_box = document.createElement("h2");
+    message_box.textContent = message;
+    top.appendChild(message_box);
+};
+
+/* Updates the score shown on the website */
+function updateScore(playerScore) {
+    let string = playerScore.innerHTML;
+    let val = string.charAt(string.length - 1);
+    string.replace(val, (++Number(val)).toString);
 }
 
-/* 
- * Simulates a round of Rock, Paper, Scissors.
- * Returns 1 if the user wins, -1 if the computer wins
- * and 0 if there is a tie. It also provides commentary
- * on game status in the form of short updates
- */
+/* Simulates a round of Rock, Paper, Scissors */
 function playRound(playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
-        console.log("It's a tie! Try again")
-        return 0;
+        printMessage("It's a tie! Try again");
     } else if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
-            console.log("You win! Paper beats Rock");
-            return 1;
+            printMessage("You win! Paper beats Rock");
+            updateScore(userScore);
         } else {
-            console.log("You lose. Rock beats Scissors");
-            return -1;
+            printMessage("You lose. Rock beats Scissors");
+            updateScore(computerScore);
         }
     } else if (computerSelection == 'Paper') {
         if (playerSelection == 'Rock') {
-            console.log("You lose. Paper beats Rock");
-            return -1;
+            printMessage("You lose. Paper beats Rock")
+            updateScore(computerScore);
         } else {
-            console.log("You win! Scissors beats Paper");
-            return 1;
+            printMessage("You win! Scissors beats Paper");
+            updateScore(userScore);
         }
     } else {
         if (playerSelection == 'Paper') {
-            console.log("You lose. Scissors beats Paper");
-            return -1;
+            printMessage("You lose. Scissors beats Paper");
+            updateScore(computerScore);
         } else {
-            console.log("You win! Rock beats Scissors");
-            return 1;
+            printMessage("You win! Rock beats Scissors");
+            updateScore(userScore);
         }
     }
 }
 
-/* Simulates a five-round Rock,
- * Paper, Scissors game and provides
- * ongoing updates and a final assessment
- */
-function game() {
-    let round = 1;
-    let playerWins = 0;
-    let computerWins = 0;
-    let playerPlay;
+/* Checks whether the game is over */
+function isGameOver() {
+    return curr_round == 5;
+};
 
-    buttons = Array.from(document.querySelectorAll(button));
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            return button.querySelector("h2").innerHTML;
-        });
-    });
-
-    while (round <= 5) {
-        
-        flag = true;
-        while(flag) {
-            flag = false;
-            switch(playRound(playerPlay, computerPlay())) {
-                case 1: 
-                    playerWins++;
-                    break;
-                case -1: 
-                    computerWins++;
-                    break;
-                default:
-                    flag = true;
-            }
-        }
-        console.log(`Score:\n You: ${playerWins} - Computer: ${computerWins}`);
-        round++;
-        document.querySelector("#round").textContent = `Round ${round} of 5`;
-    
-    }
-    console.log(`Game Over. Final Score:\n You: ${playerWins} - Computer: ${computerWins}`)
-    if (playerWins >= computerWins) {
-        return "You won!"
+/* Resets the homepage for a fresh new start */
+function resetGame() {
+    printMessage("Game Over");
+    if (userWins > computerWins) {
+        printMessage("You Won!")
     } else {
-        return "You lost."
+        printMessage("You Lost")
     }
 }
