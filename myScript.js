@@ -10,8 +10,11 @@ buttons.forEach(button => {
     button.addEventListener('click', () => {
         let status = playRound(button.querySelector("h2").textContent.trim(), computerPlay());
         if (isGameOver()) {
+            deleteMessage();
             resetGame();
+            return;
         };
+        setTimeout(deleteMessage, 1000);
         if (status) updateRound();
         return;
     });
@@ -42,6 +45,10 @@ function printMessage(message) {
     topBin.appendChild(message_box);
 };
 
+function deleteMessage() {
+    topBin.removeChild(topBin.lastChild);
+}
+
 /* Updates the score shown on the website */
 function updateScore(element) {
     let trimmed = element.textContent.trim()
@@ -61,7 +68,6 @@ function updateRound() {
 function playRound(playerSelection, computerSelection) {
     if (playerSelection.charAt(0) == computerSelection.charAt(0)) {
         printMessage("It's a tie! Try again");
-        setTimeout(() => topBin.removeChild(topBin.lastChild), 1200);
         return 0;
     } 
     if (computerSelection == 'Rock') {
@@ -89,7 +95,6 @@ function playRound(playerSelection, computerSelection) {
             updateScore(userScore);
         }
     }
-    setTimeout(() => topBin.removeChild(topBin.lastChild), 1000);
     return 1;
 }
 
@@ -103,16 +108,15 @@ function isGameOver() {
 /* Resets the homepage for a fresh new start */
 function resetGame() {
     printMessage("Game Over");
-    setTimeout(() => topBin.removeChild(topBin.lastChild), 2000);
+    setTimeout(deleteMessage, 1000);
     let trimmedUser = userScore.textContent.trim();
     let trimmedComputer = computerScore.textContent.trim();
     if (trimmedUser.charAt(trimmedUser.length - 1) > trimmedComputer.charAt(trimmedComputer.length - 1)) {
         printMessage("You Won!")
-        setTimeout(() => topBin.removeChild(topBin.lastChild), 3000);
     } else {
         printMessage("You Lost")
-        setTimeout(() => topBin.removeChild(topBin.lastChild), 3000);
     }
+    setTimeout(deleteMessage, 1000);
     userScore.textContent = "User: 0"
     computerScore.textContent = "Computer: 0"
     round.textContent = "Round 1 of 5:"
