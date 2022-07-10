@@ -4,17 +4,22 @@ let computerScore = document.querySelector("#computer-score");
 let userScore = document.querySelector("#user-score");
 let topBin = document.querySelector("#top");
 let buttons = Array.from(document.querySelectorAll("button"));
+
+/* The main operating mechanics */
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        playRound(button.querySelector("h2").textContent.trim(), computerPlay());
-        //topBin.removeChild(topBin.lastChild);
+        let status = playRound(button.querySelector("h2").textContent.trim(), computerPlay());
+        setTimeout(() => topBin.removeChild(topBin.lastChild), 1000);
+        if (isGameOver()) {
+            resetGame();
+            return;
+        };
+        if (status) updateRound();
+        return;
     });
 });
 
-/* 
- * Randomizes a choice of Rock, Paper, 
- * or Scissors on behalf of the Computer
- */
+/* Randomizes a choice of Rock, Paper, or Scissors on behalf of the Computer */
 function computerPlay() {
     move =  Math.random()
     switch (true) {
@@ -31,7 +36,7 @@ function computerPlay() {
 function printMessage(message) {
     let message_box = document.createElement("h2");
     message_box.textContent = message;
-    message_box.setAttribute("class", "round")
+    message_box.setAttribute("class", "round");
     topBin.appendChild(message_box);
 };
 
@@ -49,12 +54,11 @@ function updateRound() {
     round.textContent = round.textContent.replace(round.textContent.trim()[6], newRound);
 };
 
-
 /* Simulates a round of Rock, Paper, Scissors */
 function playRound(playerSelection, computerSelection) {
     if (playerSelection.charAt(0) == computerSelection.charAt(0)) {
         printMessage("It's a tie! Try again");
-        return;
+        return 0 ;
     } 
     if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
@@ -64,7 +68,6 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You lose. Rock beats Scissors");
             updateScore(computerScore);
         }
-        return;
     } else if (computerSelection == 'Paper') {
         if (playerSelection == 'Rock') {
             printMessage("You lose. Paper beats Rock")
@@ -73,7 +76,6 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You win! Scissors beats Paper");
             updateScore(userScore);
         }
-        return;
     } else {
         if (playerSelection == 'Paper') {
             printMessage("You lose. Scissors beats Paper");
@@ -82,21 +84,30 @@ function playRound(playerSelection, computerSelection) {
             printMessage("You win! Rock beats Scissors");
             updateScore(userScore);
         }
-        return;
     }
+    return 1;
 }
 
 /* Checks whether the game is over */
 function isGameOver() {
-    return curr_round == 5;
+    let trimmedUser = userScore.textContent.trim();
+    let trimmedComputer = computerScore.textContent.trim();
+    return trimmedUser.charAt(trimmedUser.length - 1) == 3 || trimmedComputer.charAt(trimmedComputer.length - 1) == 3;
 };
 
 /* Resets the homepage for a fresh new start */
 function resetGame() {
     printMessage("Game Over");
-    if (userWins > computerWins) {
+    setTimeout(() => topBin.removeChild(topBin.lastChild), 2000);
+    let trimmedUser = userScore.textContent.trim();
+    let trimmedComputer = computerScore.textContent.trim();
+    if (trimmedUser.charAt(trimmedUser.length - 1) > trimmedComputer.charAt(trimmedComputer.length - 1)) {
         printMessage("You Won!")
+        setTimeout(() => topBin.removeChild(topBin.lastChild), 2000);
     } else {
         printMessage("You Lost")
     }
+    userScore.textContent = "User: 0"
+    computerScore.textContent = "Computer: 0"
+    round.textContent = "Round 1 of 5:"
 }
