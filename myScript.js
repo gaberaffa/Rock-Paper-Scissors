@@ -10,7 +10,7 @@ let topBin = document.querySelector("#top");
 let buttons = Array.from(document.querySelectorAll("button"));
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        playRound(button.querySelector("h2").innerHTML.trim(), computerPlay());
+        playRound(button.querySelector("h2").textContent.trim(), computerPlay());
         //topBin.removeChild(topBin.lastChild);
     });
 });
@@ -41,8 +41,10 @@ function printMessage(message) {
 
 /* Updates the score shown on the website */
 function updateScore(element) {
-    let val = element.innerHTML.charAt(element.innerHTML.length - 1);
-    element.innerHTML.replace(val, ++Number(val).toString);
+    let trimmed = element.textContent.trim()
+    let val = trimmed.charAt(trimmed.length - 1);
+    let updated = +val;
+    element.textContent = element.textContent.replace(val, (++updated).toString());
 };
 
 /* Simulates a round of Rock, Paper, Scissors */
