@@ -10,7 +10,7 @@ let topBin = document.querySelector("#top");
 let buttons = Array.from(document.querySelectorAll("button"));
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        playRound(button.querySelector("h2").innerHTML, computerPlay());
+        playRound(button.querySelector("h2").innerHTML.trim(), computerPlay());
         //topBin.removeChild(topBin.lastChild);
     });
 });
@@ -41,16 +41,18 @@ function printMessage(message) {
 
 /* Updates the score shown on the website */
 function updateScore(element) {
-    let val = element.innerHTML.charAt(score.length - 1);
+    let val = element.innerHTML.charAt(element.innerHTML.length - 1);
     element.innerHTML.replace(val, ++Number(val).toString);
 };
 
 /* Simulates a round of Rock, Paper, Scissors */
 function playRound(playerSelection, computerSelection) {
-    if (playerSelection == computerSelection) {
+    if (playerSelection.charAt(0) == computerSelection.charAt(0)) {
         printMessage("It's a tie! Try again");
         return;
-    } else if (computerSelection == 'Rock') {
+    } 
+    
+    if (computerSelection == 'Rock') {
         if (playerSelection == 'Paper') {
             printMessage("You win! Paper beats Rock");
             updateScore(userScore);
